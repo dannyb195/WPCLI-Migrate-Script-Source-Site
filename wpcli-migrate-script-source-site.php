@@ -1,61 +1,23 @@
 <?php
 /**
  * Plugin Name: WPCLI Migrate Script Source Site
- * Plugin URI:
- * Description:
+ * Plugin URI: https://github.com/dannyb195/WPCLI-Migrate-Script-Source-Site
+ * Description: This plugin is a companion to https://github.com/dannyb195/WPCLI-Migrate-Script and should be installed on the site providing data to be migrated. It opens up the nav_menu taxonomy to the JSON REST API and will handle opening up Meta Data as well in the future.
  * Author: Dan Beil
  * Version: .0
  * Author URI: http://addactiondan.me
+ *
+ * @package wpcli-migrate-source-site
+ * @author Dan Beil
  */
 
 
-
-
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	wp_die( __( "Cheatin' Huh?", 'wpcli-source-site' ) );
+}
 
 /**
- * undocumented class
- *
- * http://test.me.dev/wp-json/wp/v2/nav_menu_item
- *
- *
- *
- * @package default
- * @author
- **/
-class WPCLI_Migrate_Script_source_Site {
-
-	public function __construct() {
-		add_action( 'init', array( $this, 'alter_nav_menu_tax' ) );
-		add_filter( 'rest_prepare_nav_menu', array( $this, 'alter_nav_menu_object' ), 99, 3 );
-	}
-
-
-	/**
-	 * This method adds the individual menu items to the main JSON response as requesed via WP CLI / REST API
-	 * @param  object $response As provided by the rest_prepare_nav_menu filter
-	 * @param  array $item      As provided by the rest_prepare_nav_menu filter
-	 * @param  object $request  As provided by the rest_prepare_nav_menu filter
-	 * @return object           Standard JSON response with the addition of a 'menu_items' array that holds all menu items for the particular menu
-	 */
-	public function alter_nav_menu_object( $response, $item, $request ) {
-
-		$response->data['menu_items'] = wp_get_nav_menu_items( $item->term_id );
-
-		return $response;
-	}
-
-	/**
-	 * This function opens the nav_menu taxonomy to the REST API
-	 *
-	 * Access via http://test.me.dev/wp-json/wp/v2/nav_menu
-	 */
-	public function alter_nav_menu_tax() {
-		register_taxonomy( 'nav_menu', 'nav_menu_item', array(
-			'show_in_rest' => true,
-		) );
-
-	}
-
-} // END class
-
-new WPCLI_Migrate_Script_source_Site();
+ * nav_menu
+ */
+require_once( __DIR__ . '/inc/class-nav-menu-json-api.php' );
