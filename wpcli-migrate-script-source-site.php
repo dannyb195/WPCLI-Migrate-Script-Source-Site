@@ -16,6 +16,8 @@
  * @author
  **/
 class WPCLI_Migrate_Script_source_Site {
+
+
 } // END class
 
 new WPCLI_Migrate_Script_source_Site()
