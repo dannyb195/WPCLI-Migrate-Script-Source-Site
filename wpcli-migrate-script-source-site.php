@@ -27,6 +27,7 @@ class WPCLI_Migrate_Script_source_Site {
 	public function __construct() {
 		add_action( 'init', array( $this, 'alter_nav_menu_item' ) );
 		add_action( 'init', array( $this, 'alter_nav_menu_tax' ) );
+		// add_filter( 'rest_prepare_nav_menu_item', array( $this, 'alter_nav_menu_item_object' ), 99, 3 );
 	}
 
 	/**
@@ -39,6 +40,22 @@ class WPCLI_Migrate_Script_source_Site {
 			'show_in_rest' => true,
 		) );
 	}
+
+	// public function alter_nav_menu_item_object( $response, $post, $request ) {
+
+		// echo "response\n<pre>";
+		// print_r($response);
+		// echo "</pre>\n\n";
+
+		// echo "post\n<pre>";
+		// print_r($post);
+		// echo "</pre>\n\n";
+
+		// die();
+		// $response = '';
+
+		// return $response;
+	// }
 
 	/**
 	 * This function opens the nav_menu taxonomy to the REST API
