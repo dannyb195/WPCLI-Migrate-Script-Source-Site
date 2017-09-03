@@ -21,3 +21,5 @@ if ( ! defined( 'ABSPATH' ) ) {
  * nav_menu
  */
 require_once( __DIR__ . '/inc/class-nav-menu-json-api.php' );
+require_once( __DIR__ . '/inc/class-user-migration-api.php' );
+

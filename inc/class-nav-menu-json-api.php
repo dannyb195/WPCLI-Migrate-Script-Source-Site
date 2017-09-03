@@ -12,7 +12,7 @@
  * @package wpcli-migrate-source-site
  * @author Dan Beil
  **/
-class WPCLI_Migrate_Script_source_Site {
+class WPCLI_Migrate_Script_Source_Site {
 
 	/**
 	 * Our Construct
@@ -20,7 +20,6 @@ class WPCLI_Migrate_Script_source_Site {
 	public function __construct() {
 		add_action( 'init', array( $this, 'alter_nav_menu_tax' ) );
 		add_filter( 'rest_prepare_nav_menu', array( $this, 'alter_nav_menu_object' ), 99, 3 );
-		add_filter( 'rest_prepare_user', array( $this, 'alter_user_object' ), 99, 3 );
 	}
 
 	/**
@@ -46,16 +45,6 @@ class WPCLI_Migrate_Script_source_Site {
 		return $response;
 	}
 
-	public function alter_user_object( $response, $user, $request ) {
-
-		error_log( print_r( $user, 1 ) );
-
-		$response->data['user_email'] = $user->data->user_email;
-		$response->data['role'] = $user->roles[0];
-
-		return $response;
-	}
-
 } // END class
 
-new WPCLI_Migrate_Script_source_Site();
+new WPCLI_Migrate_Script_Source_Site();
