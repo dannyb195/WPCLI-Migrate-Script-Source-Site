@@ -20,6 +20,18 @@ class WPCLI_Migrate_Script_source_Site {
 	public function __construct() {
 		add_action( 'init', array( $this, 'alter_nav_menu_tax' ) );
 		add_filter( 'rest_prepare_nav_menu', array( $this, 'alter_nav_menu_object' ), 99, 3 );
+		add_filter( 'rest_prepare_user', array( $this, 'alter_user_object' ), 99, 3 );
+	}
+
+	/**
+	 * This function opens the nav_menu taxonomy to the REST API
+	 *
+	 * Access via http://<site-url>/wp-json/wp/v2/nav_menu
+	 */
+	public function alter_nav_menu_tax() {
+		register_taxonomy( 'nav_menu', 'nav_menu_item', array(
+			'show_in_rest' => true,
+		) );
 	}
 
 	/**
@@ -34,15 +46,13 @@ class WPCLI_Migrate_Script_source_Site {
 		return $response;
 	}
 
-	/**
-	 * This function opens the nav_menu taxonomy to the REST API
-	 *
-	 * Access via http://<site-url>/wp-json/wp/v2/nav_menu
-	 */
-	public function alter_nav_menu_tax() {
-		register_taxonomy( 'nav_menu', 'nav_menu_item', array(
-			'show_in_rest' => true,
-		) );
+	public function alter_user_object( $response, $user, $request ) {
+
+		// error_log( print_r( $user, 1 ) );
+
+		$response->data['role'] = $user->roles[0];
+
+		return $response;
 	}
 
 } // END class
