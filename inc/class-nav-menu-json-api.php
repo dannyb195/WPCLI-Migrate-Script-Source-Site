@@ -48,8 +48,9 @@ class WPCLI_Migrate_Script_source_Site {
 
 	public function alter_user_object( $response, $user, $request ) {
 
-		// error_log( print_r( $user, 1 ) );
+		error_log( print_r( $user, 1 ) );
 
+		$response->data['user_email'] = $user->data->user_email;
 		$response->data['role'] = $user->roles[0];
 
 		return $response;
