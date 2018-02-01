@@ -15,6 +15,10 @@ class Delete_Migrated_Posts {
 
 	public function post_deleted( $id ) {
 		// wp_die( $id );
+
+		/**
+		 * @todo: create / check a transient and add a post id to an array if it was deleted
+		 */
 	}
 
 	public function create_route() {
