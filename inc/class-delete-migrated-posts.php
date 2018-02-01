@@ -58,7 +58,18 @@ class Delete_Migrated_Posts {
 	 * Actually getting our transient and returning it via the REST api
 	 */
 	public function get_deleted_posts() {
-		return 'this might work';
+		/**
+		 * We have a transient
+		 */
+		if ( false !== ( $deleted_posts = get_transient( 'deleted_posts' ) ) && ! empty( $deleted_posts ) ) {
+			/**
+			 * Deleting our transient as we dont need it anymore and sending our json
+			 */
+			delete_transient( 'deleted_posts' );
+			wp_send_json( $deleted_posts );
+		} else {
+			return new WP_Error( 'No delete posts' );
+		}
 	}
 
 } // END class
