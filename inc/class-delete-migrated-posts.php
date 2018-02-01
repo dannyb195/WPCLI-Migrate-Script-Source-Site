@@ -17,12 +17,36 @@ class Delete_Migrated_Posts {
 		// wp_die( $id );
 
 		/**
-		 * @todo: create / check a transient and add a post id to an array if it was deleted
+		 * If we do not have a transient set of deleted post IDs we create it here
 		 */
+		if ( false === ( $deleted_posts = get_transient( 'deleted_posts' ) ) ) {
+			$deleted_posts = array();
+			array_push( $deleted_posts , $id );
+
+			set_transient( 'deleted_posts', wp_json_encode( $deleted_posts ) );
+		} else {
+
+			/**
+			 * We already have a transient set so if additional posts
+			 * have been delete will will add them to the transient
+			 * and update it here
+			 */
+			$deleted_posts = get_transient( 'deleted_posts' );
+			$deleted_posts = json_decode( $deleted_posts );
+
+			if ( ! in_array( $id, $deleted_posts) ) {
+				array_push( $deleted_posts, $id );
+			}
+
+			set_transient( 'deleted_posts', wp_json_encode( $deleted_posts ) );
+		}
 	}
 
+	/**
+	 * Creating our custom route to access our transient of deleted post ids
+	 */
 	public function create_route() {
-		register_rest_route( 'wp/v2', '/working', array(
+		register_rest_route( 'wp/v2', '/deleted_posts', array(
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_deleted_posts' ),
@@ -30,6 +54,9 @@ class Delete_Migrated_Posts {
 		);
 	}
 
+	/**
+	 * Actually getting our transient and returning it via the REST api
+	 */
 	public function get_deleted_posts() {
 		return 'this might work';
 	}
