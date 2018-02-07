@@ -4,6 +4,8 @@
  *
  * @package default
  * @author
+ *
+ * http://test-me.localdev/wp-json/wp/v2/deleted_posts
  **/
 class Delete_Migrated_Posts {
 
